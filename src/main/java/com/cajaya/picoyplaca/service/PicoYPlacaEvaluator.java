@@ -22,7 +22,7 @@ public class PicoYPlacaEvaluator {
     private final PlateAnalyzerFactory plateFactory;
     private final HolidayProvider holidayProvider;
 
-    PicoYPlacaEvaluator(PlateAnalyzerFactory factory, HolidayProvider holidayProvider) {
+    public PicoYPlacaEvaluator(PlateAnalyzerFactory factory, HolidayProvider holidayProvider) {
         this.plateFactory = factory;
         this.holidayProvider = holidayProvider;
     }
@@ -30,10 +30,10 @@ public class PicoYPlacaEvaluator {
     
     private boolean isRestrictedTime(LocalTime time){
     
-        LocalTime morningStart = LocalTime.of(6, 0);
+        LocalTime morningStart = LocalTime.of(7, 0);
         LocalTime morningEnd = LocalTime.of(9, 30);
         LocalTime afternoonStart = LocalTime.of(16, 0);
-        LocalTime afternoonEnd = LocalTime.of(20, 0);
+        LocalTime afternoonEnd = LocalTime.of(19, 30);
     
         
         boolean isMorningBusyHours = !time.isBefore(morningStart) && !time.isAfter(morningEnd);
@@ -56,7 +56,7 @@ public class PicoYPlacaEvaluator {
     
     }
 
-    boolean canCirculate(String testPlate, LocalDate testDate, LocalTime testTime) {
+    public boolean canCirculate(String testPlate, LocalDate testDate, LocalTime testTime) {
         PlateAnalyzer analyzer = plateFactory.createAnalyzer(testPlate);
         int lastDigit = analyzer.getLastDigit(testPlate);
         DayOfWeek day = testDate.getDayOfWeek();

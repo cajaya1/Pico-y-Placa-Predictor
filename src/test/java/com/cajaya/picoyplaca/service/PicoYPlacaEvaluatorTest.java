@@ -22,25 +22,25 @@ public class PicoYPlacaEvaluatorTest {
     @CsvSource({
         //Plate, Date, Time, Expected Result
         
-        // --- CASOS LUNES (Placas 1 y 2) ---
-        "ABC-1231, 2026-06-22, 07:30, false", // Auto termina en 1 (hora pico mañana) -> NO circula
-        "XYZ-9872, 2026-06-22, 17:30, false", // Auto termina en 2 (hora pico tarde) -> NO circula
-        "AA-121C, 2026-06-22, 08:00, false",  // MOTO termina en 1 (hora pico) -> NO circula
-        "ABC-1233, 2026-06-22, 07:30, true",  // Auto termina en 3 (le toca martes) -> SÍ circula
+        // --- MONDAY CASES (Plates ending in 1 and 2) ---
+        "ABC-1231, 2026-06-22, 07:30, false", // Car ends in 1 (morning peak hour) -> CANNOT circulate
+        "XYZ-9872, 2026-06-22, 17:30, false", // Car ends in 2 (afternoon peak hour) -> CANNOT circulate
+        "AA-121C, 2026-06-22, 08:00, false",  // MOTORCYCLE ends in 1 (morning peak hour) -> CANNOT circulate
+        "ABC-1233, 2026-06-22, 07:30, true",  // Car ends in 3 (restricted on Tuesday) -> CAN circulate
         
-        // --- CASOS DE LÍMITES EXACTOS DE TIEMPO (Edge Cases) ---
-        "ABC-1234, 2026-06-23, 05:59, true",  // Martes, placa 4. Un minuto antes -> SÍ circula
-        "ABC-1234, 2026-06-23, 06:00, false", // Martes, placa 4. Exactamente al inicio -> NO circula
-        "ABC-1234, 2026-06-23, 09:30, false", // Martes, placa 4. Exactamente al final -> NO circula
-        "ABC-1234, 2026-06-23, 09:31, true",  // Martes, placa 4. Un minuto después -> SÍ circula
-        "ABC-1234, 2026-06-23, 16:00, false", // Martes, placa 4. Exactamente inicio tarde -> NO circula
-        "ABC-1234, 2026-06-23, 20:00, false", // Martes, placa 4. Exactamente fin tarde -> NO circula
-        "ABC-1234, 2026-06-23, 20:01, true",  // Martes, placa 4. Un minuto después tarde -> SÍ circula
+        // --- EDGE CASES FOR EXACT TIME LIMITS (Updated Schedule) ---
+        "ABC-1234, 2026-06-23, 06:59, true",  // Tuesday, plate 4. One minute before morning restriction -> CAN circulate
+        "ABC-1234, 2026-06-23, 07:00, false", // Tuesday, plate 4. Exactly at morning start time -> CANNOT circulate
+        "ABC-1234, 2026-06-23, 09:30, false", // Tuesday, plate 4. Exactly at morning end time -> CANNOT circulate
+        "ABC-1234, 2026-06-23, 09:31, true",  // Tuesday, plate 4. One minute after morning restriction -> CAN circulate
+        "ABC-1234, 2026-06-23, 16:00, false", // Tuesday, plate 4. Exactly at afternoon start time -> CANNOT circulate
+        "ABC-1234, 2026-06-23, 19:30, false", // Tuesday, plate 4. Exactly at afternoon end time -> CANNOT circulate
+        "ABC-1234, 2026-06-23, 19:31, true",  // Tuesday, plate 4. One minute after afternoon restriction -> CAN circulate
         
-        // --- OTROS DÍAS PARA COBERTURA TOTAL ---
-        "QWE-1235, 2026-06-24, 08:00, false", // Miércoles, placa 5 -> NO circula
-        "RTY-4568, 2026-06-25, 18:00, false", // Jueves, placa 8 -> NO circula
-        "UBN-9010, 2026-06-26, 08:00, false"  // Viernes, placa 0 -> NO circula
+        // --- OTHER DAYS FOR FULL COVERAGE ---
+        "QWE-1235, 2026-06-24, 08:00, false", // Wednesday, plate 5 -> CANNOT circulate
+        "RTY-4568, 2026-06-25, 18:00, false", // Thursday, plate 8 -> CANNOT circulate
+        "UBN-9010, 2026-06-26, 08:00, false"  // Friday, plate 0 -> CANNOT circulate
     })
     public void shouldReturnTrueWhenTheVehicleCanCirculate(String testPlate, LocalDate testDate, LocalTime testTime, boolean expectedCanCirculate){
         
